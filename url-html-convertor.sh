@@ -1,111 +1,43 @@
 #!/bin/bash
-function goto {
-	label=$1
-	cmd=$(sed -n "/$label:/{:a;n;p;ba}" $0 | grep -v ':$')
-	eval "$cmd"
-	exit
-}
 
-start=${1:-"start"}
-
-goto $start
-
-start:
-n=1
-file_trash=0
-echo -e '###################################'
-echo -e "#   @URL TO HTML FILE CONVERTER   #"
-echo -e "###################################"
+echo -e "############################################" 
+echo -e "            URL TO HTML CONVERTER           "
+echo -e "############################################"
 echo -e ""
-echo -e "Insert the file to convert: "
+echo -e ""
+
+find . -name "*.url" > /tmp/files_url.txt
+n=1
+while read line;do
+	echo -e "["${n}"]" ${line:2} 
+	n=$((n+1))
+done < /tmp/files_url.txt
+n=1
+
+echo -e ""
+echo -e ""
+echo -e "Choose a file for converter to html: "
 read file
-find / -name "$file" > /tmp/find_file.txt
-wc -l < /tmp/find_file.txt > /tmp/lines_number.txt
-linesnumber=`cat /tmp/lines_number.txt`
 
-
-trashtest:
-trash=0
+search_file=`sed -n ${file}p /tmp/files_url.txt`
 while read line; do
-	if [[ $line == *".Trash"* ]]; then
-		trash=1
-		goto testlinesnumber
-	fi;
-done < /tmp/find_file.txt;
+	if [[ $line == *"URL="* ]]; then
+		url=${line:4}
+		echo $url
+	fi
+done < $search_file
 
-testlinesnumber:
-if [ $linesnumber -eq 0 ]; then
-	goto zerolines
-elif [ $linesnumber -gt 1 ] && [ $linesnumber -lt 3 ] && [ $trash -eq 1 ]; then
-	goto onelines
-elif [ $linesnumber -gt 1 ] && [ $linesnumber -lt 3 ] && [ $trash -eq 0 ]; then
-	goto multipleline
-elif [ $linesnumber -gt 2 ]; then
-	goto multipleline
-elif [ $linesnumber -eq 1 ]; then
-	goto onelines
-fi;
-exit
-
-
-
-multipleline:
-while read line; do
-        if [[ $trash -eq 0 ]]; then
-		echo -e "Result "$n": "
-                echo -e "Result "$n": " >> /tmp/results.txt
-		echo -e $line
-                echo -e $line >> /tmp/results.txt
-                echo -e ""
-        fi;
-        if [[ $trash -eq 1 ]]; then
-                if [[ $line != *".Trash"* ]];then
-			echo -e "Result "$n": "
-                        echo -e "Result "$n": " >> /tmp/results.txt
-			echo -e $line
-                        echo -e $line >> /tmp/results.txt
-                        echo -e ""
-                fi
-        fi;
-	n=$((n+1))
-done < /tmp/find_file.txt;
-n=1
-goto opciones
-exit
-
-onelines:
-while read line; do
-	if [[ $trash -eq 0 ]]; then
-                echo -e "Result "$n": "
-                echo -e "Result "$n": " >> /tmp/results.txt
-                echo -e $line
-                echo -e $line >> /tmp/results.txt
-                echo -e ""
-        fi;
-        if [[ $trash -eq 1 ]]; then
-                if [[ $line != *".Trash"* ]];then
-                        echo -e "Result "$n": "
-                        echo -e "Result "$n": " >> /tmp/results.txt
-                        echo -e $line
-                        echo -e $line >> /tmp/results.txt
-                        echo -e ""
-                fi
-        fi;
-	n=$((n+1))
-done < /tmp/find_file.txt;
-n=1
-goto opciones
-exit
-
-zerolines:
-echo -e "Not exists any file."
-exit
-
-
-opciones:
-echo -e "Insert result: "
-read opcion
-opcion=$((opcion+1))
-file=`sed -n ${opcion}p /tmp/results.txt`
+final_file=${search_file:2:-3}
+final_file=`echo -e ${final_file}"html"`
+touch $final_file
+echo -e "<html>" >> $final_file
+echo -e "	<head>" >> $final_file
+echo -e '		<meta http-equiv="refresh" content="0; url='${url}'" />' >> $final_file
+echo -e "	</head>" >> $final_file
+echo -e "	<body></body>" >> $final_file
+echo -e "</html>" >> $final_file
+echo -e ""
+echo -e ""
+echo -e "FILE HTML CREATED SUCCESFULLY"
 
 
