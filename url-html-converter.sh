@@ -62,10 +62,27 @@ if [[ `wc -l < /tmp/files_url.txt` -ne 0 ]];then
 		x=$((x+1))
         done
 	echo -e ""
-	echo -e "${GREEN}###############################"
-        echo -e "     COMPLETED SUCCESFULLY!"
-	echo -e "###############################"
-	echo -e "${NC}"
+	echo -e "Delete .url files? [Y]Yes / [N]No"
+	echo -e ""
+	read del_url_files
+	answer=0
+	while [[ $answer -eq 0  ]];do
+		if [[ $del_url_files == *"Y"* ]];then
+			rm *.url
+			echo -e "${GREEN}###############################"
+       	 		echo -e "     COMPLETED SUCCESFULLY!"
+			echo -e "###############################"
+			echo -e "${NC}"
+			answer=$((answer=1))
+		elif [[ $del_url_files == *"N"* ]];then
+              		echo -e "${GREEN}###############################"
+              		echo -e "     COMPLETED SUCCESFULLY!"
+             		echo -e "###############################"
+            		echo -e "${NC}"
+              		answer=$((answer=1))
+		else : 
+		fi
+	done
 	exit
 else
 	echo -e
@@ -76,7 +93,12 @@ else
 fi;
 ;;
 
+4)
+exit
+;;
+
 *)
 ;;
 
 esac
+exit
