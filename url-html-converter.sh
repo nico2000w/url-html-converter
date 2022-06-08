@@ -3,12 +3,12 @@ NC='\033[0m'
 RED='\033[0;31m'
 GREEN='\033[1;32m'
 YELLOW='\033[1;43m'
-PURPLE='\033[0;35m'
+PURPLE='\033[0;45m'
 
 for e in `seq 1 75`;do echo -ne "${PURPLE}#";sleep 0.02; done;echo -e "";sleep 0.02;echo -ne "#";sleep 0.02;echo -ne "                          ";sleep 0.05;echo -ne "U";sleep 0.05;echo -ne "R";sleep 0.05;echo -ne "L";
 sleep 0.05;echo -ne " ";sleep 0.05;echo -ne "H";sleep 0.05;echo -ne "T";sleep 0.05;echo -ne "M";sleep 0.05;echo -ne "L";sleep 0.05;echo -ne " ";sleep 0.05;echo -ne "C";sleep 0.05;echo -ne "O";sleep 0.05;
 echo -ne "N";sleep 0.05;echo -ne "V";sleep 0.05;echo -ne "E";sleep 0.05;echo -ne "R";sleep 0.05;echo -ne "T";sleep 0.05;echo -ne "E";sleep 0.05;echo -ne "R";sleep 0.05;echo -ne "                             ";
-echo -ne "#";sleep 0.02;echo -e "";sleep 0.02;for e in `seq 1 75`;do echo -ne "#";sleep 0.02; done;echo -e "";
+echo -ne "#";sleep 0.02;echo -e "";sleep 0.02;for e in `seq 1 75`;do echo -ne "#";sleep 0.02; done;echo -e "${NC}";
 echo -e ""
 echo -e ""
 sleep 0.50
