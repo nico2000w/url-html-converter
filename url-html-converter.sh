@@ -1,8 +1,9 @@
 #!/bin/bash
 
-echo -e "############################################" 
-echo -e "            URL TO HTML CONVERTER           "
-echo -e "############################################"
+for e in `seq 1 75`;do echo -ne '#';sleep 0.02; done;echo -e "";sleep 0.02;echo -ne '#';sleep 0.02;echo -ne "                          ";sleep 0.05;echo -ne 'U';sleep 0.05;echo -ne 'R';sleep 0.05;echo -ne 'L';
+sleep 0.05;echo -ne " ";sleep 0.05;echo -ne 'H';sleep 0.05;echo -ne 'T';sleep 0.05;echo -ne 'M';sleep 0.05;echo -ne 'L';sleep 0.05;echo -ne " ";sleep 0.05;echo -ne 'C';sleep 0.05;echo -ne 'O';sleep 0.05;
+echo -ne 'N';sleep 0.05;echo -ne 'V';sleep 0.05;echo -ne 'E';sleep 0.05;echo -ne 'R';sleep 0.05;echo -ne 'T';sleep 0.05;echo -ne 'E';sleep 0.05;echo -ne 'R';sleep 0.05;echo -ne "                             ";
+echo -ne '#';sleep 0.02;echo -e "";sleep 0.02;for e in `seq 1 75`;do echo -ne '#';sleep 0.02; done;echo -e ""
 echo -e ""
 echo -e ""
 
