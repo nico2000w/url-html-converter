@@ -26,17 +26,17 @@ if [[ `wc -l < /tmp/files_url.txt` -ne 0 ]];then
 			url=${line:4}
 			echo $url
 		fi
-	done < $search_file
+	done < "$search_file"
 
 	final_file=${search_file:2:-3}
 	final_file=`echo -e ${final_file}"html"`
-	touch $final_file
-	echo -e "<html>" >> $final_file
-	echo -e "	<head>" >> $final_file
-	echo -e '		<meta http-equiv="refresh" content="0; url='${url}'" />' >> $final_file
-	echo -e "	</head>" >> $final_file
-	echo -e "	<body></body>" >> $final_file
-	echo -e "</html>" >> $final_file
+	touch "$final_file"
+	echo -e "<html>" >> "$final_file"
+	echo -e "	<head>" >> "$final_file"
+	echo -e '		<meta http-equiv="refresh" content="0; url='${url}'" />' >> "$final_file"
+	echo -e "	</head>" >> "$final_file"
+	echo -e "	<body></body>" >> "$final_file"
+	echo -e "</html>" >> "$final_file"
 	echo -e ""
 	echo -e ""
 	echo -e "FILE HTML CREATED SUCCESFULLY"
