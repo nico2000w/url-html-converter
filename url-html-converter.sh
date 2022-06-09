@@ -33,23 +33,39 @@ while read line;do
 	echo -e "${GREEN}["${n}"]${NC}" ${line:2}
 	n=$((n+1))
 done < /tmp/files_url.txt
+
+echo -e "${GREEN}[*]${NC} ALL FILES"
+
 n=1
-if [[ `wc -l < /tmp/files_url.txt` -ne 0 ]];then
+num_urls=`wc -l < /tmp/files_url.txt`
+if [[ $num_urls -ne 0 ]];then
 	echo -e ""
 	echo -e ""
 	echo -e "Choose a file for converter to html: "
 	read file
 
-	x=0
-	while [[ $x -lt ${#file} ]];do
-		search_file=`sed -n ${file:x:1}p /tmp/files_url.txt`
+        unidad=1
+        resultado=0
+        if [[ $file == "*" ]];then
+                while read line;do
+                        file=$((num_urls*unidad))
+                        file=$((file+resultado))
+                        resultado=$((file))
+                        num_urls=$((num_urls-1))
+                        unidad=$((unidad*10))
+                done < /tmp/files_url.txt
+	elif [[ $file == *[[:space:]]* ]];then
+		file=`echo $file | tr -d '[:space:]'`
+        fi
 
+	x=0
+	while read line;do
+		search_file=`sed -n ${file:x:1}p /tmp/files_url.txt`
 		while read line; do
 			if [[ $line == *"URL="* ]]; then
 				url=${line:4}
 			fi
 		done < "$search_file"
-
 		final_file=${search_file:2:-3}
 		final_file=`echo -e ${final_file}"html"`
 		touch "$final_file"
@@ -60,7 +76,7 @@ if [[ `wc -l < /tmp/files_url.txt` -ne 0 ]];then
 		echo -e "	<body></body>" >> "$final_file"
 		echo -e "</html>" >> "$final_file"
 		x=$((x+1))
-        done
+        done < /tmp/files_url.txt
 	echo -e ""
 	echo -e "Delete .url files? [Y]Yes / [N]No"
 	echo -e ""
