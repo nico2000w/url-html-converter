@@ -95,7 +95,11 @@ if [[ $num_urls -ne 0 ]];then
 	answer=0
 	while [[ $answer -eq 0  ]];do
 		if [[ $del_url_files == *"Y"* ]];then
-			rm *.url
+			while read line;do
+				if [[ "$search_file" == "$line" ]];then
+					rm $line
+				fi
+			done < /tmp/files_url2.txt
 			echo -e "${GREEN}###############################"
        	 		echo -e "     COMPLETED SUCCESFULLY!"
 			echo -e "###############################"
