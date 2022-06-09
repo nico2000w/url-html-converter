@@ -21,23 +21,32 @@ sleep 0.50
 echo -e "${YELLOW}[4]${NC} EXIT"
 echo -e ""
 echo -e "CHOOSE AN OPTION:"
-read option
+read -s option
 
-case $option in 
+case $option in
 
 1)
 
 find . -name "*.url" > /tmp/files_url.txt
-n=1
-while read line;do
-	echo -e "${GREEN}["${n}"]${NC}" ${line:2}
-	n=$((n+1))
-done < /tmp/files_url.txt
-
-echo -e "${GREEN}[*]${NC} ALL FILES"
-
-n=1
 num_urls=`wc -l < /tmp/files_url.txt`
+if [[ $num_urls -eq 0 ]];then echo -e ""; echo -e "ANY FILE WITH URL EXTENSION IN DIRECTORY"; echo -e ""; echo -e "${NC}"; exit;fi
+n=1
+num_urls2=`awk -v r=$num_urls 'BEGIN { rounded = sprintf("%.0f", r/10); print rounded }'`
+lines2=10
+l=0
+while [[ $l -ne $num_urls2 ]];do
+if [[ -l -ne 0  ]];then
+	head -n $lines2 /tmp/files_url.txt | tail $((num_urls-lines2)) > /tmp/files_url2.txt
+elif [[ -l -eq 0 ]];then
+	head -n $lines2 /tmp/files_url.txt > /tmp/files_url2.txt
+fi
+while read line;do
+		echo -e "${GREEN}["${n}"]${NC}" ${line:2}
+		n=$((n+1))
+done < /tmp/files_url2.txt
+echo -e "${GREEN}[*]${NC} ALL FILES"
+n=1
+
 if [[ $num_urls -ne 0 ]];then
 	echo -e ""
 	echo -e ""
@@ -60,7 +69,8 @@ if [[ $num_urls -ne 0 ]];then
 
 	x=0
 	while read line;do
-		search_file=`sed -n ${file:x:1}p /tmp/files_url.txt`
+		search_file=`sed -n ${file:x:1}p /tmp/files_url2.txt`
+		if [[ "$search_file" == "$line" ]];then
 		while read line; do
 			if [[ $line == *"URL="* ]]; then
 				url=${line:4}
@@ -76,7 +86,8 @@ if [[ $num_urls -ne 0 ]];then
 		echo -e "	<body></body>" >> "$final_file"
 		echo -e "</html>" >> "$final_file"
 		x=$((x+1))
-        done < /tmp/files_url.txt
+		fi
+        done < /tmp/files_url2.txt
 	echo -e ""
 	echo -e "Delete .url files? [Y]Yes / [N]No"
 	echo -e ""
@@ -96,17 +107,16 @@ if [[ $num_urls -ne 0 ]];then
              		echo -e "###############################"
             		echo -e "${NC}"
               		answer=$((answer=1))
-		else : 
+		else :
 		fi
 	done
-	exit
-else
-	echo -e
-	echo -e "ANY FILE WITH URL EXTENSION IN DIRECTORY"
-	echo -e
-	echo -e "${NC}"
-	exit
 fi;
+l=$((l+1))
+line=$((line+10))
+lines2=$((lines2+10))
+rm /tmp/files_url2.txt
+done
+exit
 ;;
 
 4)

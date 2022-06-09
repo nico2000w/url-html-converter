@@ -8,3 +8,9 @@ chmod +x ./url-html-converter.sh
 
 ./url-html-converter.sh
 
+1º) FILES IN CURRENT REPOSITORY --> Let you convert all files by lots of maximum 10 files
+
+2º) RECURSIVITY MODE -->
+
+3º) SEARCH BY NAME -->
+
