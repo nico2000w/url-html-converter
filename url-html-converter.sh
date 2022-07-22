@@ -1,26 +1,48 @@
 #!/bin/bash
+clear
 NC='\033[0m'
-RED='\033[0;31m'
-GREEN='\033[1;32m'
+RED='\033[0;41m'
 YELLOW='\033[1;43m'
-PURPLE='\033[0;45m'
+BLUE='\033[0;44m'
+BLACK='\033[0;40m'
+GREY='\033[2;40m'
 
-for e in `seq 1 75`;do echo -ne "${PURPLE}#";sleep 0.02; done;echo -e "";sleep 0.02;echo -ne "#";sleep 0.02;echo -ne "                          ";sleep 0.05;echo -ne "U";sleep 0.05;echo -ne "R";sleep 0.05;echo -ne "L";
-sleep 0.05;echo -ne " ";sleep 0.05;echo -ne "H";sleep 0.05;echo -ne "T";sleep 0.05;echo -ne "M";sleep 0.05;echo -ne "L";sleep 0.05;echo -ne " ";sleep 0.05;echo -ne "C";sleep 0.05;echo -ne "O";sleep 0.05;
-echo -ne "N";sleep 0.05;echo -ne "V";sleep 0.05;echo -ne "E";sleep 0.05;echo -ne "R";sleep 0.05;echo -ne "T";sleep 0.05;echo -ne "E";sleep 0.05;echo -ne "R";sleep 0.05;echo -ne "                             ";
-echo -ne "#";sleep 0.02;echo -e "";sleep 0.02;for e in `seq 1 75`;do echo -ne "#";sleep 0.02; done;echo -e "${NC}";
-echo -e ""
-echo -e ""
-sleep 0.50
-echo -e "${NC}${YELLOW}[1]${NC} FILES IN CURRENT REPOSITORY"
-sleep 0.50
-echo -e "${YELLOW}[2]${NC} RECURSIVITY MODE"
-sleep 0.50
-echo -e "${YELLOW}[3]${NC} SEARCH BY NAME"
-sleep 0.50
-echo -e "${YELLOW}[4]${NC} EXIT"
-echo -e ""
-echo -e "CHOOSE AN OPTION:"
+getcols=`tput cols`
+getline=`tput lines`
+printnewln(){
+	for e in `seq 1 $3`;do echo -ne "$1$2";done
+}
+printwindow(){
+	for e in `seq 1 $((getcols*(getline-$3)))`;do echo -ne "$1$2";done
+}
+printnewln "$RED" "#" "$getcols"
+printnewln "$RED" "#" "$((getcols/2-11))"
+echo -ne " URL - HTML CONVERTER "
+if [[ $getcols -gt 202 || $getcols -lt 138 ]];then 
+	printnewln "$RED" "#" "$((getcols/2-10))"
+elif [[ $getcols -lt 203 && $getcols -gt 137 ]];then 
+	printnewln "$RED" "#" "$((getcols/2-11))"
+fi
+printnewln "$RED" "#" "$getcols"
+printnewln "$BLUE" " " "$getcols"
+echo -ne "${YELLOW}[1]${BLUE} FILES IN CURRENT REPOSITORY"
+printnewln "$BLUE" " " "$((getcols-32))"
+echo -e " "
+echo -ne "${YELLOW}[2]${BLUE} RECURSIVITY MODE"
+printnewln "$BLUE" " " "$((getcols-21))"
+echo -e " "
+echo -ne "${YELLOW}[3]${BLUE} SEARCH BY NAME"
+printnewln "$BLUE" " " "$((getcols-19))"
+echo -e " "
+echo -ne "${YELLOW}[4]${BLUE} EXIT"
+printnewln "$BLUE" " " "$((getcols-9))"
+echo -e " "
+printnewln "$BLUE" " " "$getcols"
+echo -ne "${BLACK}CHOOSE AN OPTION:"
+printnewln "$BLACK" " " "$((getcols-17))"
+printnewln "$BLACK" " " "$getcols"
+printwindow "$BLACK" " " "11"
+echo -ne "$BLACK"
 read -s option
 
 case $option in
@@ -29,7 +51,7 @@ case $option in
 
 find . -name "*.url" > /tmp/files_url.txt
 num_urls=`wc -l < /tmp/files_url.txt`
-if [[ $num_urls -eq 0 ]];then echo -e ""; echo -e "ANY FILE WITH URL EXTENSION IN DIRECTORY"; echo -e ""; echo -e "${NC}"; exit;fi
+if [[ $num_urls -eq 0 ]];then echo -e "$GREY"; echo -e "ANY FILE WITH URL EXTENSION IN DIRECTORY";echo -ne "ENDING";sleep 1;echo -ne ".";sleep 1;echo -ne ".";sleep 1;echo -ne ".";sleep 1;echo -ne ".";echo -e "$NC";clear exit;fi
 n=1
 num_urls2=`awk -v r=$num_urls 'BEGIN { rounded = sprintf("%.0f", r/10); print rounded }'`
 lines2=10
@@ -120,10 +142,16 @@ line=$((line+10))
 lines2=$((lines2+10))
 rm /tmp/files_url2.txt
 done
+clear
 exit
 ;;
 
 4)
+echo -ne "$BLACK"
+echo -e "$GREY"
+echo -ne "ENDING";sleep 1;echo -ne ".";sleep 1;echo -ne ".";sleep 1;echo -ne ".";sleep 1 
+echo -ne "$NC"
+clear
 exit
 ;;
 
@@ -131,4 +159,5 @@ exit
 ;;
 
 esac
+clear
 exit
